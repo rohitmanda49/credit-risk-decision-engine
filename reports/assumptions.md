@@ -63,3 +63,16 @@ Built end-to-end credit risk decision engine on 300K+ loan records;
 LightGBM with calibrated probabilities and cost-sensitive thresholds
 reduced expected loss vs rule-based baseline; deployed with SHAP
 reason codes, fairness audit, and drift monitoring.
+
+## Validation Strategy
+- Approximate temporal split using SK_ID_CURR as a proxy for origination
+  order (70/15/15 train/val/test).
+- Train: 215,257 rows, default rate 8.13%
+- Val:    46,127 rows, default rate 7.98%
+- Test:   46,127 rows, default rate 7.92%
+- Default rate drift of 0.21pp across splits confirms SK_ID_CURR is a
+  reasonable temporal proxy (mild, realistic drift, not data leakage).
+- Limitation: Home Credit dataset lacks an explicit origination date.
+  SK_ID_CURR correlates with time but is not a clean timestamp.
+  Documented in model card.
+- No post-origination features (no target leakage).s
