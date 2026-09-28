@@ -76,3 +76,9 @@ reason codes, fairness audit, and drift monitoring.
   SK_ID_CURR correlates with time but is not a clean timestamp.
   Documented in model card.
 - No post-origination features (no target leakage).s
+
+## Fairness Policy
+- **Excluded:** CODE_GENDER. Under fair lending law (ECOA, FCA, RBI guidelines), 
+  gender cannot influence credit decisions.
+- **Audited:** NAME_FAMILY_STATUS, NAME_EDUCATION_TYPE, DAYS_BIRTH — 
+  socioeconomic proxies measured for approval-rate parity.
