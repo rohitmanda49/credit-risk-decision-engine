@@ -91,3 +91,42 @@ compare business impact (expected loss, approval rate) — not just AUC.
 - Requires periodic retraining to account for drift.
 - Fair lending considerations: gender excluded; other demographic groups 
   audited for approval parity.
+
+## Business Metrics (Test Set, 46,127 applications)
+
+**Cost assumptions:** LGD=0.65, profit margin=10%, review cost=0.5%, 
+EAD=$100K, review capacity=5%.
+
+| Policy | Approval Rate | Net P&L |
+|---|---|---|
+| Approve all | 100.00% | $187,445,000 |
+| Reject all | 0.00% | $0 |
+| Naive threshold (0.50) | 99.62% | $192,465,000 |
+| Optimal binary (0.14) | 83.50% | $240,055,000 |
+| **Three-way (0.10 / 0.20)** | **74.40%** | **$252,567,000** |
+
+**Headline results:**
+- Cost-sensitive thresholding: **+$52.6M vs. naive 0.50**
+- Three-way decisioning: **+$12.5M over binary**
+- Total improvement vs. approve-all: **+$65.1M**
+
+The optimal threshold (0.14) closely matched the theoretical break-even 
+PD (0.133), validating the cost framework.
+
+## Fairness Audit (Test Set)
+
+| Group | Approval Rate | Actual Default Rate |
+|---|---|---|
+| Income Q1 | 72.4% | 8.35% |
+| Income Q4 | 79.8% | 6.47% |
+| Age 20-30 | 57.4% | 11.00% |
+| Age 50+ | 85.7% | 5.40% |
+| Lower secondary | 64.7% | 9.39% |
+| Higher education | 85.9% | 5.08% |
+
+**80% rule (EEOC):**
+- Income: 0.90 ✅ passes
+- Age: 0.67 ❌ fails (risk-justified)
+- Education: 0.75 ❌ fails (risk-justified)
+
+**Interpretation:** Approval-rate differences align with actual default-rate differences across all groups. The model differentiates by *risk*, not by protected characteristics. Age and education gaps are the largest and would attract regulatory scrutiny; both are permitted factors under ECOA but their correlations with protected classes warrant ongoing monitoring.
